@@ -4,6 +4,7 @@ startup
 {
 	vars.GameTime = TimeSpan.FromSeconds(0);
 	vars.TotalCarnivalTime = new TimeSpan(0);
+	vars.TotalRewardTime = new TimeSpan(0);
 	vars.PrevRTA = new TimeSpan(0);
 	vars.TotalPauseTime = 0f;
 	vars.TotalTime = 0f;
@@ -76,7 +77,7 @@ init
 	inst.Watch<float>("TimedTimer", "TimedCarEvent", "CurrentTime"); //Remaining time in the event
 	inst.Watch<bool>("TimedDone", "TimedCarEvent", "End");
 
-	inst.Watch<float>("LoadRewardTimer", "LoadingScreen", "timer");
+	inst.Watch<float>("LoadRewardTimer", "LoadingScreen", "timer"); //when load delays are active for item popups (e.g. money after selecting Work from map screen)
 }
 
 
@@ -162,6 +163,10 @@ update
 		vars.TotalCarnivalTime = vars.TotalCarnivalTime.Add(CurrentRTA - vars.PrevRTA);
 	}
 
+	else if (current.LoadRewardTimer < 0f) {
+		vars.TotalRewardTime = vars.TotalRewardTime.Add(CurrentRTA - vars.PrevRTA);
+	}
+
 	vars.PrevRTA = new TimeSpan(CurrentRTA.Ticks);
 }
 
@@ -190,6 +195,7 @@ onStart
 	vars.LapSub = 0f;
 	vars.PrevRTA = new TimeSpan(0);
 	vars.TotalCarnivalTime = new TimeSpan(0);
+	vars.TotalRewardTime = new TimeSpan(0);
 
 	vars.ChalSplit = true;
 	vars.PlatSplit = true;
@@ -243,7 +249,7 @@ onReset
 
 gameTime
 {
-	return TimeSpan.FromSeconds(vars.TotalTime + vars.SplitTime + vars.TotalPauseTime) + vars.TotalCarnivalTime;
+	return TimeSpan.FromSeconds(vars.TotalTime + vars.SplitTime + vars.TotalPauseTime) + vars.TotalCarnivalTime + vars.TotalRewardTime;
 }
 
 exit
