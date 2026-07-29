@@ -241,23 +241,7 @@ reset
 }
 
 
-onReset
-{
-
-}
-
-
 gameTime
 {
 	return TimeSpan.FromSeconds(vars.TotalTime + vars.SplitTime + vars.TotalPauseTime) + vars.TotalCarnivalTime + vars.TotalRewardTime;
-}
-
-exit
-{
-	
-}
-
-shutdown
-{
-	
 }
