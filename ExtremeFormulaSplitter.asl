@@ -63,7 +63,7 @@ init
 
 	//Challenge stuff
 	inst.Watch<float>("ChalTime", "ProvingGrounds", "RaceTimer");
-	inst.Watch<float>("ChalCountdown", "ProvingGrounds", "CountdownTimer");	//Pre-challenge countdown
+	inst.Watch<float>("ChalCountdown", "ProvingGrounds", "CountdownTimer");	//Pre-Challenge countdown
 	inst.Watch<float>("ChalDone", "ProvingGrounds", "endCounter");			//Weird multi-purpose timer which only uses certain values when finishing a Challenge
 
 	//Story mode intro drive
