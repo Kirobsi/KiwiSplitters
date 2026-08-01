@@ -1,11 +1,11 @@
 state("100% True") {
-	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;
-	double RoomLoads : 0x7583B8, 0xF0, 0x1C0;
-	bool IsLoading : 0x7583B8, 0xF0, 0x216;
-	bool IsPaused : 0x7583B8, 0xF0, 0x836;
+	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;	//counter which increments upon deleting any save file
+	double RoomLoads : 0x7583B8, 0xF0, 0x1C0;	//counter which increments upon initiating a mid-level load
+	bool IsLoading : 0x7583B8, 0xF0, 0x216;		//bool for the proper loading screen
+	bool IsPaused : 0x7583B8, 0xF0, 0x836;		//bool for having the pause menu up. Only relevant for run start?
 	//bool InGame : 0x7583B8, 0xF0, 0x206;
 	
-	bool HlevelIntroAnim : 0x741358;
+	bool HlevelIntroAnim : 0x741358;	//No idea what this is but it's true when Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
 	
 	double LevelTime : 0x7583B8, 0xF0, 0x1F0;
 	double World : 0x7583B8, 0xF0, 0xC0;
@@ -19,18 +19,13 @@ state("100% True") {
 	bool CameraButton : 0x763388, 0x280, 0x718, 0x80, 0x276;
 }
 
+
 startup
 {
     vars.CanStartTimer = false;
-	vars.Split = false;
+	vars.Split = false;	//to prevent multi-splitting when the level counter goes too high
 	vars._Stage = 0;
 	vars.RoomLoad = false;
-}
-
-
-init
-{
-   
 }
 
 
@@ -90,11 +85,13 @@ reset
 
 onReset
 {
-	vars._Stage = 1;
+	vars.CanStartTimer = false;
+	vars.Split = false;
+	vars._Stage = 0;
 }
 
 
-gameTime
+onReset
 {
-	
+	vars._Stage = 1;
 }
