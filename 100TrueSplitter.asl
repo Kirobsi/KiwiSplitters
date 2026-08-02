@@ -1,8 +1,7 @@
 state("100% True") {
 	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;	//counter which increments upon deleting any save file
-	uint RoomID : 0xA05048;						//Internal GM room ID (I think? certainly seems to function that way hehe)
 	double RoomLoads : 0x7583B8, 0xF0, 0x1C0;	//counter which increments upon initiating a mid-level load
-	bool IsLoading : 0x7583B8, 0xF0, 0x216;		//bool for the proper loading screen
+	bool IsLoading : 0x7583B8, 0xF0, 0x216;		//bool for the loading screen
 	bool IsPaused : 0x7583B8, 0xF0, 0x836;		//bool for having the pause menu up. Only relevant for run start?
 	//bool InGame : 0x7583B8, 0xF0, 0x206;
 	
@@ -16,6 +15,14 @@ state("100% True") {
 	bool JumpButton : 0x763388, 0x280, 0x718, 0x470, 0x486;
 	bool DashButton : 0x763388, 0x280, 0x718, 0x470, 0x8B6;
 	bool CameraButton : 0x763388, 0x280, 0x718, 0x80, 0x276;
+
+	uint RoomID : 0xA05048; //Internal GM room ID (I think? certainly seems to function that way hehe)
+	/* ROOM ID REF (to make it easier to find in future patches)
+	Menu		-	34
+	Results		-	4
+	1-1 room 1	-	5
+	The Judges	-	150
+	*/
 }
 
 
@@ -63,7 +70,8 @@ start
 
 split
 {
-	if (current.RoomID == 4 && current.RoomID != old.RoomID) {return true;}
+	if (current.RoomID == 4 && current.RoomID != old.RoomID && old.RoomID != 150) {return true;}
+	else if (current.RoomID == 154 && old.RoomID != current.RoomID) {return true;}
 }
 
 
