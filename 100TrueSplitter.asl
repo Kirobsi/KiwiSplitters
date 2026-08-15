@@ -1,27 +1,24 @@
 state("100% True") {
 	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;	//counter which increments upon deleting any save file
-	double RoomLoads : 0x7583B8, 0xF0, 0x1C0;	//counter which increments upon initiating a mid-level load
+	//double RoomLoads : 0x7583B8, 0xF0, 0x1C0;	//counter which increments upon initiating a mid-level load
 	bool IsLoading : 0x7583B8, 0xF0, 0x216;		//bool for the loading screen
 	bool IsPaused : 0x7583B8, 0xF0, 0x836;		//bool for having the pause menu up. Only relevant for run start?
 	//bool InGame : 0x7583B8, 0xF0, 0x206;
 	
-	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true when Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
-	
-	double LevelTime : 0x7583B8, 0xF0, 0x1F0;
+	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true while Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
 	
 	// Input handler stuff, since 'first input' decides when the run starts
 	bool MoveLeft : 0x763388, 0x280, 0x718, 0x470, 0x10D6;
 	bool MoveRight : 0x763388, 0x280, 0x718, 0x80, 0xC96;
-	bool JumpButton : 0x763388, 0x280, 0x718, 0x470, 0x486;
+	bool JumpButton : 0x763388, 0x280, 0x718, 0x80, 0x476;
 	bool DashButton : 0x763388, 0x280, 0x718, 0x470, 0x8B6;
 	bool CameraButton : 0x763388, 0x280, 0x718, 0x80, 0x276;
 
 	uint RoomID : 0xA05048; //Internal GM room ID (I think? certainly seems to function that way hehe)
-	/* ROOM ID REF (to make it easier to find in future patches)
+	/* ROOM ID REF (to make it easier to find in future patches) (although it didn't change from 1.1.12 -> 1.1.16 so maybe I don't need to find it again)
 	Menu		-	34
 	Results		-	4
 	1-1 room 1	-	5
-	The Judges	-	150
 	*/
 }
 
@@ -29,23 +26,14 @@ state("100% True") {
 startup
 {
     vars.CanStartTimer = false;
-	vars.RoomLoad = false;
 
 	settings.Add("ResultsPause", true, "Pause loadless timer during end-of-level results screen");
 }
 
 
-update
-{
-	if (current.RoomLoads > old.RoomLoads) {vars.RoomLoad = true;}
-	else if (current.LevelTime > old.LevelTime) {vars.RoomLoad = false;}
-}
-
-
 isLoading
 {
-	if (current.IsLoading) {return true;}	// pause timer during load screens between levels
-	else if (vars.RoomLoad) {return true;}
+	if (current.IsLoading) {return true;}	// pause timer during loads
 	else if (current.RoomID == 4 && settings["ResultsPause"]) {return true;} // pause timer during level end screen
 	else {return false;}
 }
