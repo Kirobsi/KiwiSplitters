@@ -8,11 +8,11 @@ state("100% True") {
 	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true while Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
 	
 	// Input handler stuff, since 'first input' decides when the run starts
-	bool MoveLeft : 0x763388, 0x280, 0x718, 0x470, 0x10D6;
-	bool MoveRight : 0x763388, 0x280, 0x718, 0x80, 0xC96;
-	bool JumpButton : 0x763388, 0x280, 0x718, 0x80, 0x476;
-	bool DashButton : 0x763388, 0x280, 0x718, 0x470, 0x8B6;
-	bool CameraButton : 0x763388, 0x280, 0x718, 0x80, 0x276;
+	bool MoveLeft : 0x748720, 0x318, 0xFC8, 0xA70, 0x350, 0x3E6;
+	bool MoveRight : 0x778728, 0xF08, 0x1B8, 0x80, 0xDD6;
+	bool JumpButton : 0x778728, 0xF08, 0x1B8, 0x80, 0x486;
+	bool DashButton : 0x778728, 0xF08, 0x1B8, 0x80, 0x9C6;
+	bool CameraButton : 0x778728, 0xF08, 0x1B8, 0x80, 0x66;
 
 	uint RoomID : 0xA05048; //Internal GM room ID (I think? certainly seems to function that way hehe)
 	/* ROOM ID REF (to make it easier to find in future patches) (although it didn't change from 1.1.12 -> 1.1.16 so maybe I don't need to find it again)
