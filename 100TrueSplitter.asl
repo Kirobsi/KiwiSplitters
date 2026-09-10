@@ -53,8 +53,8 @@ start
 
 split
 {
-	if (current.RoomID == 4 && current.RoomID != old.RoomID && old.RoomID != 150) {return true;}	//Finishing levels
-	else if (current.RoomID == 154 && old.RoomID != current.RoomID) {return true;}					//On entering credits
+	if (current.RoomID == 4 && current.RoomID != old.RoomID && old.RoomID != 150 && old.RoomID != 152) {return true;}	//Finishing levels
+	else if (current.RoomID > 152 && current.RoomID < 155 && old.RoomID != current.RoomID) {return true;}				//On entering credits/Peka cutscene
 }
 
 
