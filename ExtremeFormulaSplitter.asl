@@ -48,7 +48,7 @@ init
 	inst.Watch<bool>("RaceStarted", "RaceManager", "CurrentRaceManager", "Started");					//if the race has started (i.e. can drive, green "START" text)
 	inst.Watch<float>("RaceTime", "RaceManager", "CurrentRaceManager", "RaceTime");						//time the race has been active; continues even after player finishes
 	inst.Watch<float>("RaceDone", "RaceManager", "CurrentRaceManager", "Player1", "TotalRaceTime");		//time at end of race, only set then
-	//inst.Watch<bool>("RaceDQ", "RaceManager", "CurrentRaceManager", "Player1", "Disqualified");		//bool for disqualification
+	inst.Watch<bool>("RaceDQ", "RaceManager", "CurrentRaceManager", "Player1", "Disqualified");		//bool for disqualification
 	inst.Watch<bool>("IsNRace", "Tourney", "CurrentTourney", "IsNightRace");
 
 	//Lap split setting stuff
@@ -105,7 +105,7 @@ update
 	}
 
 	current.DeltaTime = current.RaceTime - old.RaceTime;
-	if (current.DeltaTime > 0f && current.DeltaTime < 1f && current.RaceDone == 0f)
+	if (current.DeltaTime > 0f && current.DeltaTime < 1f && current.RaceDone == 0f && !current.RaceDQ)
 	{
 		if (current.Laps > old.Laps && settings["LapSplit"])
 		{
@@ -180,7 +180,15 @@ isLoading
 
 start
 {
-	// If all of this stuff is in onStart, the timer breaks if the Edit Splits is opened and then closed & they aren't using the splitter via layout... incredible work
+	if (current.ActiveScene == "STORY EVENT - Intro Drive" && old.ActiveScene != current.ActiveScene) {return true;} //Story mode start
+	else if (current.ChalTime > 0 && old.ChalTime == 0) {return true;}			//Proving Grounds/Challenge start
+	else if (current.StageTime > 0f && current.StageTime < 0.5f) {return true;}	//Platforming ILs
+	else if (current.RaceStarted && !old.RaceStarted) {return true;}			//Race or Tourney start
+}
+
+
+onStart
+{
 	vars.TotalTime = 0f;
 	vars.TotalPauseTime = 0f;
 	vars.SplitTime = 0f;
@@ -192,11 +200,6 @@ start
 	vars.ChalSplit = true;
 	vars.PlatSplit = true;
 	vars.CarniSplits = 0;
-	
-	if (current.ActiveScene == "STORY EVENT - Intro Drive" && old.ActiveScene != current.ActiveScene) {return true;} //Story mode start
-	else if (current.ChalTime > 0 && old.ChalTime == 0) {return true;}			//Proving Grounds/Challenge start
-	else if (current.StageTime > 0f && current.StageTime < 0.5f) {return true;}	//Platforming ILs
-	else if (current.RaceStarted && !old.RaceStarted) {return true;}			//Race or Tourney start
 }
 
 
