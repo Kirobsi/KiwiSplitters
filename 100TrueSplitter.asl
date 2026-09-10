@@ -1,9 +1,7 @@
 state("100% True") {
 	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;	//counter which increments upon deleting any save file
-	//double RoomLoads : 0x7583B8, 0xF0, 0x1C0;	//counter which increments upon initiating a mid-level load
 	bool IsLoading : 0x7583B8, 0xF0, 0x216;		//bool for the loading screen
 	bool IsPaused : 0x7583B8, 0xF0, 0x836;		//bool for having the pause menu up. Only relevant for run start?
-	//bool InGame : 0x7583B8, 0xF0, 0x206;
 	
 	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true while Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
 	
@@ -26,25 +24,22 @@ state("100% True") {
 startup
 {
     vars.CanStartTimer = false;
-
-	settings.Add("ResultsPause", true, "Pause loadless timer during end-of-level results screen");
 }
 
 
 isLoading
 {
 	if (current.IsLoading) {return true;}	// pause timer during loads
-	else if (current.RoomID == 4 && settings["ResultsPause"]) {return true;} // pause timer during level end screen
 	else {return false;}
 }
 
 
 start
 {
-	if (current.RoomID == 5) {
-		if (current.HlevelIntroAnim) {vars.CanStartTimer = true;}
+	if (current.RoomID == 5) { //If starting 1-1,
+		if (current.HlevelIntroAnim) {vars.CanStartTimer = true;} //allow starting if the intro 'crash' animation happens
 		
-		if (vars.CanStartTimer && !current.HlevelIntroAnim && !current.IsPaused)
+		if (vars.CanStartTimer && !current.HlevelIntroAnim && !current.IsPaused) //and actually do it when not paused, the animation's over, and Hlev presses any relevant button
 		{
 			if ((current.CameraButton && current.CameraButton != old.CameraButton) || (current.MoveRight != current.MoveLeft) || (current.JumpButton && current.JumpButton != old.JumpButton) || (current.DashButton && current.DashButton != old.DashButton))
 			{
@@ -58,14 +53,14 @@ start
 
 split
 {
-	if (current.RoomID == 4 && current.RoomID != old.RoomID && old.RoomID != 150) {return true;}
-	else if (current.RoomID == 154 && old.RoomID != current.RoomID) {return true;}
+	if (current.RoomID == 4 && current.RoomID != old.RoomID && old.RoomID != 150) {return true;}	//Finishing levels
+	else if (current.RoomID == 154 && old.RoomID != current.RoomID) {return true;}					//On entering credits
 }
 
 
 reset
 {
-	if (current.DelSaveIncr > old.DelSaveIncr) {return true;}
+	if (current.DelSaveIncr > old.DelSaveIncr) {return true;}	//Reset when a file is deleted
 }
 
 
