@@ -180,15 +180,7 @@ isLoading
 
 start
 {
-	if (current.ActiveScene == "STORY EVENT - Intro Drive" && old.ActiveScene != current.ActiveScene) {return true;} //Story mode start
-	else if (current.ChalTime > 0 && old.ChalTime == 0) {return true;}			//Proving Grounds/Challenge start
-	else if (current.StageTime > 0f && current.StageTime < 0.5f) {return true;}	//Platforming ILs
-	else if (current.RaceStarted && !old.RaceStarted) {return true;}			//Race or Tourney start
-}
-
-
-onStart
-{
+	// If all of this stuff is in onStart, the timer breaks if the Edit Splits is opened and then closed & they aren't using the splitter via layout... incredible work
 	vars.TotalTime = 0f;
 	vars.TotalPauseTime = 0f;
 	vars.SplitTime = 0f;
@@ -200,6 +192,11 @@ onStart
 	vars.ChalSplit = true;
 	vars.PlatSplit = true;
 	vars.CarniSplits = 0;
+	
+	if (current.ActiveScene == "STORY EVENT - Intro Drive" && old.ActiveScene != current.ActiveScene) {return true;} //Story mode start
+	else if (current.ChalTime > 0 && old.ChalTime == 0) {return true;}			//Proving Grounds/Challenge start
+	else if (current.StageTime > 0f && current.StageTime < 0.5f) {return true;}	//Platforming ILs
+	else if (current.RaceStarted && !old.RaceStarted) {return true;}			//Race or Tourney start
 }
 
 
