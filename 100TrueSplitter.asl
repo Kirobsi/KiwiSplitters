@@ -1,7 +1,8 @@
 state("100% True") {
-	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;	//counter which increments upon deleting any save file
-	bool IsLoading : 0x7583B8, 0xF0, 0x216;		//bool for the loading screen
-	bool IsPaused : 0x7583B8, 0xF0, 0x836;		//bool for having the pause menu up. Only relevant for run start?
+	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;				//counter which increments upon deleting any save file
+	bool IsLoading : 0x7583B8, 0xF0, 0x216;					//bool for the loading screen
+	bool IsPaused : 0x7583B8, 0xF0, 0x836;					//bool for having the pause menu up. Only relevant for run start?
+	double Trueness : 0x748720, 0x4C8, 0xF10, 0x968, 0x370;	//current 'rank' in a level, e.g. 52% True
 	
 	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true while Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
 	
@@ -23,7 +24,9 @@ state("100% True") {
 
 startup
 {
-    vars.CanStartTimer = false;
+    settings.Add("HundoMode", false, "Prevent split unless level was 100% True");
+	
+	vars.CanStartTimer = false;
 }
 
 
@@ -53,8 +56,12 @@ start
 
 split
 {
-	if (current.RoomID == 4 && current.RoomID != old.RoomID && old.RoomID != 150 && old.RoomID != 152) {return true;}	//Finishing levels
-	else if (current.RoomID > 152 && current.RoomID < 155 && old.RoomID != current.RoomID) {return true;}				//On entering credits/Peka cutscene
+	if (current.RoomID == 4 && current.RoomID != old.RoomID && old.RoomID != 150 && old.RoomID != 152)		//Finishing levels
+	{
+		if (settings["HundoMode"] && current.Trueness < 100) {return false;}
+		else {return true;}
+	}	
+	else if (current.RoomID > 152 && current.RoomID < 155 && old.RoomID != current.RoomID) {return true;}	//On entering credits/Peka cutscene
 }
 
 
