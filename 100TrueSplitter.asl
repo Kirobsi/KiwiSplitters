@@ -1,8 +1,9 @@
 state("100% True") {
-	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;				//counter which increments upon deleting any save file
-	bool IsLoading : 0x7583B8, 0xF0, 0x216;					//bool for the loading screen
-	bool IsPaused : 0x7583B8, 0xF0, 0x836;					//bool for having the pause menu up. Only relevant for run start?
-	double Trueness : 0x748720, 0x4C8, 0xF10, 0x968, 0x370;	//current 'rank' in a level, e.g. 52% True
+	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;				 //counter which increments upon deleting any save file
+	bool IsLoading : 0x7583B8, 0xF0, 0x216;					 //bool for the loading screen
+	bool IsPaused : 0x7583B8, 0xF0, 0x836;					 //bool for having the pause menu up. Only relevant for run start?
+	double LevelTime : 0x748720, 0x4C8, 0xF10, 0x968, 0x330; //IGT frame count for current level
+	double Trueness : 0x748720, 0x4C8, 0xF10, 0x968, 0x370;	 //current 'rank' in a level, e.g. 52% True
 	
 	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true while Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
 	
@@ -25,6 +26,7 @@ state("100% True") {
 startup
 {
     settings.Add("HundoMode", false, "Prevent split unless level was 100% True");
+	settings.Add("ILMode", false, "Mirror in-game timer (super disallowed for full-game lol)");
 	
 	vars.CanStartTimer = false;
 }
@@ -32,8 +34,15 @@ startup
 
 isLoading
 {
-	if (current.IsLoading) {return true;}	// pause timer during loads
+	if (settings["ILMode"]) {return true;}		// prevent timer from running for IL mode so it just uses IGT instead
+	else if (current.IsLoading) {return true;}	// pause timer during loads
 	else {return false;}
+}
+
+
+gameTime
+{
+	if (settings["ILMode"]) {return TimeSpan.FromSeconds(current.LevelTime / 60);}
 }
 
 
@@ -51,6 +60,8 @@ start
 			}
 		}
 	}
+
+	else if (old.LevelTime == 0 && current.LevelTime > 0 && settings["ILMode"]) {return true;}
 }
 
 
