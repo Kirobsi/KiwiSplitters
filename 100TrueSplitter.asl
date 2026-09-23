@@ -26,7 +26,7 @@ state("100% True") {
 startup
 {
     settings.Add("HundoMode", false, "Prevent split unless level was 100% True");
-	settings.Add("ILMode", false, "IL Mode (super disallowed for full-game lol)");
+	settings.Add("ILMode", false, "IL Mode (syncs timer to current level time)");
 	
 	vars.CanStartTimer = false;
 }
