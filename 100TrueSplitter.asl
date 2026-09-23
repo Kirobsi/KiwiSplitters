@@ -2,7 +2,7 @@ state("100% True") {
 	double DelSaveIncr : 0x7583B8, 0xF0, 0x1B0;				 //counter which increments upon deleting any save file
 	bool IsLoading : 0x7583B8, 0xF0, 0x216;					 //bool for the loading screen
 	bool IsPaused : 0x7583B8, 0xF0, 0x836;					 //bool for having the pause menu up. Only relevant for run start?
-	double LevelTime : 0x7583B8, 0xF0, 0x1F0; //IGT frame count for current level
+	double LevelTime : 0x7583B8, 0xF0, 0x1F0;				 //IGT frame count for current level
 	double Trueness : 0x748720, 0x4C8, 0xF10, 0x968, 0x370;	 //current 'rank' in a level, e.g. 52% True
 	
 	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true while Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
