@@ -25,7 +25,9 @@ state("100% True") {
 
 startup
 {
-    settings.Add("HundoMode", false, "Prevent split unless level was 100% True");
+    settings.Add("ShopSplit", true, "Split when exiting Myths HQ exterior (for shopping)");
+	settings.SetToolTip("ShopSplit", "Does not split when entering HQ building");
+	settings.Add("HundoMode", false, "Prevent split unless level was 100% True");
 	settings.Add("ILMode", false, "IL Mode (syncs timer to current level time)");
 	
 	vars.CanStartTimer = false;
@@ -71,7 +73,10 @@ split
 	{
 		if (settings["HundoMode"] && current.Trueness < 100) {return false;}
 		else {return true;}
-	}	
+	}
+
+	else if (old.RoomID == 30 && current.RoomID != old.RoomID && current.RoomID != 31) {return true;}		//On finishing shopping
+
 	else if (current.RoomID > 152 && current.RoomID < 155 && old.RoomID != current.RoomID) {return true;}	//On entering credits/Peka cutscene
 }
 
