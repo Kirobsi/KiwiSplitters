@@ -5,6 +5,7 @@ startup
 	vars.GameTime = TimeSpan.FromSeconds(0);
 	vars.TotalCarnivalTime = new TimeSpan(0);
 	vars.TotalRewardTime = new TimeSpan(0);
+	vars.TotalActivityTime = new TimeSpan(0);
 	vars.PrevRTA = new TimeSpan(0);
 	vars.TotalPauseTime = 0f;
 	vars.TotalTime = 0f;
@@ -48,7 +49,6 @@ init
 	inst.Watch<bool>("RaceStarted", "RaceManager", "CurrentRaceManager", "Started");					//if the race has started (i.e. can drive, green "START" text)
 	inst.Watch<float>("RaceTime", "RaceManager", "CurrentRaceManager", "RaceTime");						//time the race has been active; continues even after player finishes
 	inst.Watch<float>("RaceDone", "RaceManager", "CurrentRaceManager", "Player1", "TotalRaceTime");		//time at end of race, only set then
-	inst.Watch<bool>("RaceDQ", "RaceManager", "CurrentRaceManager", "Player1", "Disqualified");		//bool for disqualification
 	inst.Watch<bool>("IsNRace", "Tourney", "CurrentTourney", "IsNightRace");
 
 	//Lap split setting stuff
@@ -105,7 +105,7 @@ update
 	}
 
 	current.DeltaTime = current.RaceTime - old.RaceTime;
-	if (current.DeltaTime > 0f && current.DeltaTime < 1f && current.RaceDone == 0f && !current.RaceDQ)
+	if (current.DeltaTime > 0f && current.DeltaTime < 1f && current.RaceDone == 0f)
 	{
 		if (current.Laps > old.Laps && settings["LapSplit"])
 		{
@@ -165,6 +165,10 @@ update
 
 	else if (current.LoadRewardTimer < 0f) {
 		vars.TotalRewardTime = vars.TotalRewardTime.Add(CurrentRTA - vars.PrevRTA);
+	}
+
+	else if (current.ActiveScene == "CUTSCENE - CARD CUT R_EVENTS" || current.ActiveScene == "CUTSCENE - CARD CUT RS_EVENTS") {
+		vars.TotalActivityTime = vars.TotalActivityTime.Add(CurrentRTA - vars.PrevRTA);
 	}
 
 	vars.PrevRTA = new TimeSpan(CurrentRTA.Ticks);
@@ -243,5 +247,5 @@ reset
 
 gameTime
 {
-	return TimeSpan.FromSeconds(vars.TotalTime + vars.SplitTime + vars.TotalPauseTime) + vars.TotalCarnivalTime + vars.TotalRewardTime;
+	return TimeSpan.FromSeconds(vars.TotalTime + vars.SplitTime + vars.TotalPauseTime) + vars.TotalCarnivalTime + vars.TotalRewardTime + vars.TotalActivityTime;
 }
