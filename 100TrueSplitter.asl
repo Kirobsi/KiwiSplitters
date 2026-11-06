@@ -8,7 +8,7 @@ state("100% True") {
 	bool HlevelIntroAnim : 0x741358; //No idea what this is but it's true while Hlev is flying out of the limo at the start of a run, which allows me to do run start >w>
 	
 	// Input handler stuff, since 'first input' decides when the run starts
-	bool MoveLeft : 0x748720, 0x318, 0xFC8, 0xA70, 0x350, 0x3E6;
+	bool MoveLeft : 0x778728, 0xF08, 0x1B8, 0x80, 0x11e6;
 	bool MoveRight : 0x778728, 0xF08, 0x1B8, 0x80, 0xDD6;
 	bool JumpButton : 0x778728, 0xF08, 0x1B8, 0x80, 0x486;
 	bool DashButton : 0x778728, 0xF08, 0x1B8, 0x80, 0x9C6;
