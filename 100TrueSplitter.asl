@@ -75,7 +75,7 @@ split
 		else {return true;}
 	}
 
-	else if (old.RoomID == 30 && current.RoomID != old.RoomID && current.RoomID != 31) {return true;}		//On finishing shopping
+	else if (old.RoomID == 30 && current.RoomID != old.RoomID && current.RoomID != 31) {return settings["ShopSplit"];}	//On finishing shopping
 
 	else if (current.RoomID > 152 && current.RoomID < 155 && old.RoomID != current.RoomID) {return true;}	//On entering credits/Peka cutscene
 }
